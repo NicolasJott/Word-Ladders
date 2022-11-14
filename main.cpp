@@ -16,7 +16,7 @@ struct WordInfo {
 
 
 
-int hamming(const char s1[], const char s2[]) {
+int hamming(const char s1[], const char s2[]) {             // Checks to see how far apart words are from each other in similar letters
     int count = 0;
     for (int i = 0; i < 5; i++) {
         if (s1[i] != s2[i]) {
@@ -37,22 +37,22 @@ void generateAdjacency(WordInfo words[]) {
     }
 }
 
-int search(WordInfo wordList[], const string& word) {
+int search(WordInfo wordList[], const string& word) {                       // Searches for word in list
     for (int i = 0; i < NWORDS; i++) {
         if (word == wordList[i].word) {
-            return i;
+            return i;                                                       // if word found, return the index of the word.
         }
     }
-    return -1;
+    throw std::domain_error("Word not found in list.");
 }
 
-bool isInList(WordInfo words[], const string& word) {
+bool isInList(WordInfo words[], const string& word) {                       // Function checks to see if word exists in list
     for (int i = 0; i < NWORDS; i++) {
         if (word == words[i].word) {
-            return true;
+            return true;                                                    // if so, return true
         }
     }
-    return false;
+    return false;                                                           // if not, return false
 }
 
 void genLadder(WordInfo* w1, WordInfo* w2) {
@@ -93,7 +93,7 @@ int main() {
     WordInfo* w1;
     WordInfo* w2;
 
-
+    // Read words from text file and insert them into the words list
     ifstream inFile;
     inFile.open("sgb-words.txt");
     if (!inFile)
@@ -111,39 +111,43 @@ int main() {
 
     }
 
-    generateAdjacency(words);
+    generateAdjacency(words);   // Generates adjacency lists for each word in word list
 
 
     // read two words from keyboard
-    cout << "Please enter two 5-letter words:";
+    cout << "Please enter two 5-letter words: ";
     cin >> word1 >> word2;
 
     // Check to make sure the words are 5 letters in length
-    if (word1.length() != 5 || word2.length() != 5) {
-        throw std::invalid_argument("One of more of the inputted words are invalid.");
-    }
+    try {
+        if (word1.length() != 5 || word2.length() != 5) throw std::invalid_argument("One of more of the inputted words are invalid. Make sure the words entered are 5 letters in length.");
 
-    try {
-        if (!isInList(words, word1)) throw std::domain_error("Error: First word does not exist in list.");
-    }
-    catch (std::domain_error& e) {
-        cout << e.what() << endl;
-        return 0;
-    }
-    try {
-        if (!isInList(words, word2)) throw std::domain_error("Error: Second word does not exist in list.");
-    }
-    catch (std::domain_error& e) {
-        cout << e.what() << endl;
+    } catch (std::invalid_argument &e) {
+        cout << "Error: " << e.what() << endl;
         return 0;
     }
 
+    // Check to make sure inputted words exist in the list.
+    try {
+        if (!isInList(words, word1)) throw std::domain_error("First word does not exist in list.");
+    }
+    catch (std::domain_error &e) {
+        cout << "Error: " << e.what() << endl;
+        return 0;
+    }
+    try {
+        if (!isInList(words, word2)) throw std::domain_error("Second word does not exist in list.");
+    }
+    catch (std::domain_error& e) {
+        cout << "Error: " << e.what() << endl;
+        return 0;
+    }
 
-    // find both words in word list
-    w1 = &words[search(words, word1)];
-    w2 = &words[search(words, word2)];
+    // find both words in word list and return the index of the word
+    w1 = &words[search(words, word1)];                  // assign words[index] to w1
+    w2 = &words[search(words, word2)];                  // assign words[index] to w2
 
-    genLadder(w1, w2);
+    genLadder(w1, w2);                                               // Call final function to generate word ladder.
 
     return 0;
 }
