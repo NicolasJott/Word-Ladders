@@ -5,12 +5,11 @@
 
 using namespace std;
 
-
 const int NWORDS = 5757;
 
 struct WordInfo {
     char word[6]{};
-    WordInfo* ptr = nullptr;
+    WordInfo *ptr = nullptr;
     LinearList<WordInfo*> adjList;
 };
 
