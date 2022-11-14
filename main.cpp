@@ -115,7 +115,7 @@ int main() {
 
 
     // read two words from keyboard
-    cout << "Please enter two 5-letter words: ";
+    cout << "Please enter two 5-letter words:";
     cin >> word1 >> word2;
 
     // Check to make sure the words are 5 letters in length
