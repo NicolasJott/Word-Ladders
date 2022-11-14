@@ -36,7 +36,7 @@ void generateAdjacency(WordInfo words[]) {
     }
 }
 
-int search(WordInfo wordList[], const string& word) {                       // Searches for word in list
+int wordSearch(WordInfo wordList[], const string& word) {                       // Searches for word in list
     for (int i = 0; i < NWORDS; i++) {
         if (word == wordList[i].word) {
             return i;                                                       // if word found, return the index of the word.
@@ -143,8 +143,8 @@ int main() {
     }
 
     // find both words in word list and return the index of the word
-    w1 = &words[search(words, word1)];                  // assign words[index] to w1
-    w2 = &words[search(words, word2)];                  // assign words[index] to w2
+    w1 = &words[wordSearch(words, word1)];                  // assign words[index] to w1
+    w2 = &words[wordSearch(words, word2)];                  // assign words[index] to w2
 
     genLadder(w1, w2);                                               // Call final function to generate word ladder.
 
