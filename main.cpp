@@ -7,15 +7,15 @@ using namespace std;
 
 const int NWORDS = 5757;
 
-struct WordInfo {
+struct WordData {
     char word[6]{};
-    WordInfo *ptr = nullptr;
-    LinearList<WordInfo*> adjList;
+    WordData *ptr = nullptr;
+    LinearList<WordData*> adjList;
 };
 
 
 
-int hamming(const char s1[], const char s2[]) {             // Checks to see how far apart words are from each other in similar letters
+int hamming(const char *s1, const char *s2) {             // Checks to see how far apart words are from each other in similar letters
     int count = 0;
     for (int i = 0; i < 5; i++) {
         if (s1[i] != s2[i]) {
@@ -25,7 +25,7 @@ int hamming(const char s1[], const char s2[]) {             // Checks to see how
     return count;
 }
 
-void generateAdjacency(WordInfo words[]) {
+void generateAdjacency(WordData words[]) {
     for (int i = 0; i < NWORDS; i++) {
         for (int j = i + 1; j < NWORDS; j++) {
             if (hamming(words[i].word, words[j].word) == 1) {
@@ -36,7 +36,7 @@ void generateAdjacency(WordInfo words[]) {
     }
 }
 
-int wordSearch(WordInfo wordList[], const string& word) {                       // Searches for word in list
+int wordSearch(WordData *wordList, const string& word) {                       // Searches for word in list
     for (int i = 0; i < NWORDS; i++) {
         if (word == wordList[i].word) {
             return i;                                                       // if word found, return the index of the word.
@@ -45,7 +45,7 @@ int wordSearch(WordInfo wordList[], const string& word) {                       
     throw std::domain_error("Word not found in list.");
 }
 
-bool isInList(WordInfo words[], const string& word) {                       // Function checks to see if word exists in list
+bool isInList(WordData *words, const string& word) {                       // Function checks to see if word exists in list
     for (int i = 0; i < NWORDS; i++) {
         if (word == words[i].word) {
             return true;                                                    // if so, return true
@@ -54,9 +54,9 @@ bool isInList(WordInfo words[], const string& word) {                       // F
     return false;                                                           // if not, return false
 }
 
-void genLadder(WordInfo* w1, WordInfo* w2) {
-    Queue<WordInfo*> Q;
-    WordInfo* w;
+void genLadder(WordData* w1, WordData* w2) {
+    Queue<WordData*> Q;
+    WordData* w;
 
     Q.enqueue(w2);
 
@@ -87,10 +87,10 @@ void genLadder(WordInfo* w1, WordInfo* w2) {
 
 
 int main() {
-    WordInfo words[NWORDS];
+    WordData words[NWORDS];
     string word1, word2;
-    WordInfo* w1;
-    WordInfo* w2;
+    WordData* w1;
+    WordData* w2;
 
     // Read words from text file and insert them into the words list
     ifstream inFile;
